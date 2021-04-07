@@ -1,57 +1,75 @@
+let j = 0
 let i = 0
 let storage = window.localStorage
 
-function adicionarInput(){
 
-    //$('#add_input').click($('#Div_inp_pag1').append('numero<input type="number" class="input_pag1" name="numero1" value="ValorNumero1"><br><br>'));
+function chamar(){
+    
+    var a = storage.getItem('opt_metodo1')
+    
+    console.log(typeof(a))
+
+    console.log(a)
+
+    b = "AHP"
+    
+    JSON.stringify(b)
+
+    console.log(typeof(b))
+    console.log(b)
+    
+    console.log(a == b)
+
+    //console.log(JSON.stringify(storage.getItem('opt_metodo1')))
+    
+    if(storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS" )
+    {
+                
+        window.location.href = 'C:\Users\Raphael-note\Documents\Final JS\novo\pag0.html'
+
+        window.location.href ='http://google.com'
+
+    }
+} 
+
+
+function adicionarInputCriterio(){
+
     i++
     
-    // if(document.title === 'Form1')
+     $( "#criterios" ).clone().appendTo( "#form_criterios" ).attr('name', 'criterio' + i) // passa como parametro o nome com o valor de 'i'
 
-    if(document.getElementById('add_criterios')){
-        $( "#criterios" ).clone().appendTo( "#form_criterios" ).attr('name', 'criterio' + i) // passa como parametro o nome com o valor de 'i'
+    
+    // document.title === 'Form2'
+}
 
-    }
-    // if(document.title === 'Form2'){
-    if(document.getElementById('#add_alternativas')){
-        $( "#alternativas" ).clone().appendTo( "#form_alternativas" ).attr('name', 'alternativa' + i) // passa como parametro o nome com o valor de 'i'
-    // }
-    }
+function adicionarInputAlternativas() {
+
+    j++
+    $( "#alternativas" ).clone().appendTo( "#form_alternativas" ).attr('name', 'alternativa' + j) // passa como parametro o nome com o valor de 'i'
 }
 
 
 
 function save1(){
-    //let numero1 = document.getElementById('numero1');
 
-    //let numero1 = document.querySelector('#numero1').Value
 
-        
-    //numero1 = $('input.input_pag1').val()
 
-    //storage.setItem("knumero1" , inp_pag1_list)
-
-    //numero1 = $('#numero1').val(),
-
-    //storage.setItem("knumero1" , numero1)
-
-    let str = $( "#form_input" ).serializeArray(); // transforma  os inputs em objeto
+    let str = $( "#form_alternativas" ).serializeArray(); // transforma  os inputs em objeto
     console.log(str)
 
 
-       for (const numero of str) {  // atribui para cada valor do objeto str  uma key(numero.name) e um valor(numero.value)
-            storage.setItem(numero.name, numero.value) 
+       for (const alternativa of str) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
+            storage.setItem(alternativa.name, alternativa.value) 
 
-            console.log(numero)
+            console.log(alternativa)
             
-           storage.setItem("kqtdinput", i+1) // adiciona aquantidade de inputs        
+           storage.setItem("kqtalternativa", i+1) // adiciona aquantidade de inputs    
+
         }
+
         
-        /*for (let i = 0;  i <= str.length ; i++) {
-            localStorage.setItem('numero'+i , JSON.stringify(str[i]));
-            console.log(storage.getItem('numero'+i))
-            
-        }*/
+        
 
 }
 
@@ -60,38 +78,23 @@ function save2(){
     
  
 
-    /*numero2 = $('#numero2').val(),
-
-    storage.setItem("knumero2" , numero2)
-
-    let quantidadeinput = Number(storage.getItem('kqtdinput'))
-    
-    storage.setItem('kqtdinput', quantidadeinput)*/
-
-    let str = $( "#form_input1" ).serializeArray(); // transforma  os inputs em objeto
+    let str = $( "#form_criterios" ).serializeArray(); // transforma  os inputs em objeto
     console.log(str)
-    qtdatributo = 1
 
-       for (const atributo of str) {  // atribui para cada valor do objeto  uma key(numero.name) e um valor(numero.value)
-            storage.setItem(atributo.name, atributo.value) 
 
-            console.log(atributo)
+       for (const criterio of str) {  // atribui para cada valor do objeto  uma key(numero.name) e um valor(numero.value)
+            storage.setItem(criterio.name, criterio.value) 
+
+            console.log(criterio)
             
 
 
-            storage.setItem("kqtatributo", i+1)
-            //storage.setItem("kqtdinput", Number(storage.getItem('kqtdinput'))+str.length)
-            //storage.setItem('kqtdinput', qtdatributo+Number(storage.getItem('kqtdinput')))
+            storage.setItem("kqtcriterio", i+1)
+
 
         }
-
-        
-        //qtdatributo = qtdatributo + Number(storage.getItem("kqtdinput")) // adiciona aquantidade de inputs
-        //storage.setItem('kqtdinput' , qtdatributo)
-        
+        console.log(storage.getItem('criterio1'))
 }
-
-
 
 
 
@@ -147,27 +150,6 @@ function tabela(){
         //$('#tbody').append("<tr> ${")
     }
 
-    
-
-    
-    /*for (let i = 0; i < array.length; i++) {
-        inputobj = {
-            nome: "numero" + i ,
-            valor: Number(storage.getItem('numero'+i))
-             
-            
-            
-        }
-    }*/
-        //console.log(inputobj)
-
-    /*for (let i = 0; i < array.length; i++) {
-        const linha = $('<td>').append(array[i]);
-        $('#Tlinhas').append(linha)
-        
-    }
-             
-    console.log(array)*/ 
 }
 
 function tabela2 (){
@@ -218,7 +200,7 @@ function tabela3(){
     qtdinput = Number(storage.getItem("kqtatributo"))
 
 
-    for (let i = 0; i < qtdatributo; i++) {  // coloca cada valor do storage em um array
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
         arrayAtributo[i] =  storage.getItem('atributo' + i)
             
     } 
@@ -244,41 +226,41 @@ function tabela3(){
 function tabela4(){
   
   
-    let arrayAtributo = []
-    let arrayInput = []
-    qtdinput = Number(storage.getItem("kqtdinput"))
-    qtdatributo = Number(storage.getItem("kqtatributo"))
+    let arrayCriterios = []
+    let arrayAlternativas = []
+    qtdalternativa = Number(storage.getItem("kqtdalternativa"))
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
 
 
-    for (let i = 0; i < qtdatributo; i++) {  // coloca cada valor do storage em um array
-        arrayAtributo[i] =  storage.getItem('atributo' + i)
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] =  storage.getItem('citerio' + i)
             
     } 
-    console.log(arrayAtributo)
+    console.log(arrayCriterios)
 
 
-    for (let i = 0; i < qtdinput; i++) {  // coloca cada valor do storage em um array
-        arrayInput[i] =  storage.getItem('numero' + i)
+    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
+        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
             
     } 
-    console.log(arrayInput)
-    console.log(arrayInput[0].length)
+    console.log(arrayAlternativas)
+    console.log(arrayAlternativas[0].length)
 
 
     arrayPage = []  
 
-    arrayPage.push(arrayInput)
-    arrayPage.push(arrayAtributo)
+    arrayPage.push(arrayAlternativas)
+    arrayPage.push(arrayCriterios)
 
     console.log(arrayPage)
     
 
 
     //$('#tbody').append(td)
-    if(Number(storage.getItem('kqtdinput')) > Number(storage.getItem('kqtatributo'))){
-        for (i = 0; i < arrayInput.length; i++){
+    if(Number(storage.getItem('kqtalternativa')) > Number(storage.getItem('kqtcriterio'))){
+        for (i = 0; i < arrayAlternativas.length; i++){
    
-             $('#tbody').append('<tr><td>'+arrayInput[i]+'</td> <td>'+arrayAtributo[i]+'</td></tr>');
+             $('#tbody').append('<tr><td>'+arrayAlternativas[i]+'</td> <td>'+arrayCriterios[i]+'</td></tr>');
                 
                 
             }
@@ -350,37 +332,56 @@ var els = document.getElementsByName('metodo2');
     // $(location).attr('href', 'http://google.com');
 }
 
-function chamar(){
+
+
+function valoresCriterios(){
     
-    var a = storage.getItem('opt_metodo1')
+
+    let arrayCriterios = []
+    let arrayAlternativas = []
+    qtdalternativa = Number(storage.getItem("kqtalternativa"))
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    console.log(storage.getItem('criterio1'))
+
+
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] = storage.getItem('criterio' + i)
+            
+    } 
+    console.log(arrayCriterios)
+
+
+    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
+        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
+            
+    } 
+    console.log(arrayAlternativas)
+    //  console.log(arrayAlternativas[0].length)
+
+
+    $('#div_valoresAlternativas').append('<form id="form_critAlt" action="#">')
+
+    // let divCriterios = document.getElementById('div_valoresAlternativas')
+
+    for (let i = 0; i < arrayCriterios.length; i++) {
+        
+        $('#form_critAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2>')
+
+            
+            // $('#div_valoresAlternativas').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div" style="float: left; margin-right: 10px;" ><label>'+arrayAlternativas[i]+'</label   ><input type="number" style="width: 150px; margin-top: 5px;"></div>')
+        for (let j = 0; j < arrayAlternativas.length; j++) {
+            
+            $('#form_critAlt').append('<label>'+arrayAlternativas[j]+'</label><input type="number" style="width: 150px; margin-top: 5px;">')
+            
+        }
+            // let div = createElement('div')
+            // div.appendChild(document.createElement(storage.getItem("criterios"+i)))
+
+        
+        
     
-    console.log(typeof(a))
-
-    console.log(a)
-
-    b = "AHP"
-    
-    JSON.stringify(b)
-
-    console.log(typeof(b))
-    console.log(b)
-    
-    console.log(a == b)
-
-    //console.log(JSON.stringify(storage.getItem('opt_metodo1')))
-    
-    if(storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS" )
-    {
-                
-        window.location.href = 'C:\Users\Raphael-note\Documents\Final JS\novo\pag0.html'
-
-        window.location.href ='http://google.com'
-
-    }
-} 
+}
 
 
-
-
-
-
+}
