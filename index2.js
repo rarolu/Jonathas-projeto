@@ -32,12 +32,29 @@ function chamar(){
     }
 } 
 
+function tirarInputCriterio(){
+
+    $( "#criterios" +i).remove()
+    i--
+
+}
+
+function tirarInputAlternativas(){
+
+    $( "#alternativas" +i).remove()
+    i--
+
+}
+
 
 function adicionarInputCriterio(){
 
     i++
     
-     $( "#criterios" ).clone().appendTo( "#form_criterios" ).attr('name', 'criterio' + i) // passa como parametro o nome com o valor de 'i'
+     let newInput = $( "#criterios" ).clone()
+     newInput.attr('id', 'criterios' + i);
+     newInput.attr('name', 'criterio' + i);
+     newInput.appendTo( "#form_criterios")// passa como parametro o nome com o valor de 'i'
 
     
     // document.title === 'Form2'
@@ -45,8 +62,12 @@ function adicionarInputCriterio(){
 
 function adicionarInputAlternativas() {
 
-    j++
-    $( "#alternativas" ).clone().appendTo( "#form_alternativas" ).attr('name', 'alternativa' + j) // passa como parametro o nome com o valor de 'i'
+    i++
+
+    let newInput = $( "#alternativas" ).clone()
+    newInput.attr('id', 'alternativas' + i);
+    newInput.attr('name', 'alternativas' + i);
+    newInput.appendTo( "#form_alternativas")// passa como parametro o nome com o valor de 'i'
 }
 
 
@@ -378,7 +399,6 @@ function valoresCriterios(){
             // let div = createElement('div')
             // div.appendChild(document.createElement(storage.getItem("criterios"+i)))
 
-    
     
     
     
