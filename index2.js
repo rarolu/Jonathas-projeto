@@ -25,9 +25,9 @@ function chamar(){
     if(storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS" )
     {
                 
-        window.location.href = 'C:\Users\Raphael-note\Documents\Final JS\novo\pag0.html'
+        window.location.href = './registroAltCrit.html'
 
-        window.location.href ='http://google.com'
+        //window.location.href ='http://google.com'
 
     }
 } 
@@ -342,41 +342,57 @@ function valoresCriterios(){
     qtdalternativa = Number(storage.getItem("kqtalternativa"))
     qtdcriterios = Number(storage.getItem("kqtcriterio"))
 
-    console.log(storage.getItem('criterio1'))
+    // console.log(storage.getItem('criterio1'))
 
 
     for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
         arrayCriterios[i] = storage.getItem('criterio' + i)
             
     } 
-    console.log(arrayCriterios)
+    // console.log(arrayCriterios)
 
 
     for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
         arrayAlternativas[i] =  storage.getItem('alternativa' + i)
             
     } 
-    console.log(arrayAlternativas)
+    // console.log(arrayAlternativas)
     //  console.log(arrayAlternativas[0].length)
 
 
-    $('#div_valoresAlternativas').append('<form id="form_critAlt" action="#">')
+    // $('#div_valoresAlternativas').append('<form id="form_critAlt" action="#">')
 
     // let divCriterios = document.getElementById('div_valoresAlternativas')
 
     for (let i = 0; i < arrayCriterios.length; i++) {
         
-        $('#form_critAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2>')
+        $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form></div>')
 
             
             // $('#div_valoresAlternativas').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div" style="float: left; margin-right: 10px;" ><label>'+arrayAlternativas[i]+'</label   ><input type="number" style="width: 150px; margin-top: 5px;"></div>')
         for (let j = 0; j < arrayAlternativas.length; j++) {
             
-            $('#form_critAlt').append('<label>'+arrayAlternativas[j]+'</label><input type="number" style="width: 150px; margin-top: 5px;">')
+            $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name="nome'+i+'" style="width: 150px; margin-top: 5px;">')
             
         }
             // let div = createElement('div')
             // div.appendChild(document.createElement(storage.getItem("criterios"+i)))
+
+    
+    
+    
+    
+    let srl = $( "#form0" ).serializeArray(); // transforma  os inputs em objeto
+    console.log(srl)
+
+
+    for (const alternativa of srl) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
+        storage.setItem(alternativa.name, alternativa.value) 
+
+        console.log(alternativa)
+            
+       storage.setItem("NOalternativa", i) // adiciona aquantidade de inputs    
+    }   
 
         
         
