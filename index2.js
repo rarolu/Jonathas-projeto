@@ -41,8 +41,8 @@ function tirarInputCriterio(){
 
 function tirarInputAlternativas(){
 
-    $( "#alternativas" +i).remove()
-    i--
+    $( "#alternativas" +j).remove()
+    j--
 
 }
 
@@ -62,11 +62,11 @@ function adicionarInputCriterio(){
 
 function adicionarInputAlternativas() {
 
-    i++
+    j++
 
     let newInput = $( "#alternativas" ).clone()
-    newInput.attr('id', 'alternativas' + i);
-    newInput.attr('name', 'alternativas' + i);
+    newInput.attr('id', 'alternativas' + j);
+    newInput.attr('name', 'alternativa' + j);
     newInput.appendTo( "#form_alternativas")// passa como parametro o nome com o valor de 'i'
 }
 
@@ -76,16 +76,20 @@ function save1(){
 
 
 
-    let str = $( "#form_alternativas" ).serializeArray(); // transforma  os inputs em objeto
-    console.log(str)
+    let strAlt = $( "#form_alternativas" ).serializeArray(); // transforma  os inputs em objeto
+    console.log(strAlt)
 
 
-       for (const alternativa of str) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
+       for (const alternativa of strAlt) {  // atribui para cada valor do objeto strAlt  uma key(alternativa.name) e um valor(alternativa.value)
             storage.setItem(alternativa.name, alternativa.value) 
 
             console.log(alternativa)
             
-           storage.setItem("kqtalternativa", i+1) // adiciona aquantidade de inputs    
+            for (let i = 0; i <= strAlt.length; i++) {
+                
+                storage.setItem("kqtalternativa", i) // adiciona aquantidade de inputs    
+                
+            }
 
         }
 
@@ -99,22 +103,25 @@ function save2(){
     
  
 
-    let str = $( "#form_criterios" ).serializeArray(); // transforma  os inputs em objeto
-    console.log(str)
+    let strCrit = $( "#form_criterios" ).serializeArray(); // transforma  os inputs em objeto
+    console.log(strCrit)
 
 
-       for (const criterio of str) {  // atribui para cada valor do objeto  uma key(numero.name) e um valor(numero.value)
+       for (const criterio of strCrit) {  // atribui para cada valor do objeto  uma key(numero.name) e um valor(numero.value)
             storage.setItem(criterio.name, criterio.value) 
 
             console.log(criterio)
             
 
-
-            storage.setItem("kqtcriterio", i+1)
+            for (let j = 0; j <= strCrit.length; j++) {
+                
+                storage.setItem("kqtcriterio", j    )
+                
+            }
 
 
         }
-        console.log(storage.getItem('criterio1'))
+        
 }
 
 
@@ -370,14 +377,14 @@ function valoresCriterios(){
         arrayCriterios[i] = storage.getItem('criterio' + i)
             
     } 
-    // console.log(arrayCriterios)
+    console.log(arrayCriterios)
 
 
     for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
         arrayAlternativas[i] =  storage.getItem('alternativa' + i)
             
     } 
-    // console.log(arrayAlternativas)
+    console.log(arrayAlternativas)
     //  console.log(arrayAlternativas[0].length)
 
 
@@ -401,19 +408,33 @@ function valoresCriterios(){
 
     
     
-    
-    let srl = $( "#form0" ).serializeArray(); // transforma  os inputs em objeto
-    console.log(srl)
+    // for (let i = 0; i < arrayAlternativas.length; i++) {
+    //     let srl = $( "#form"+i+"").serializeArray(); // transforma  os inputs em objeto
+    //     console.log(srl)
+        
+        
+    // }
 
 
-    for (const alternativa of srl) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
-        storage.setItem(alternativa.name, alternativa.value) 
+    // for (const alternativa of srl) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
+    //     storage.setItem(alternativa.name, alternativa.value) 
 
-        console.log(alternativa)
+    //     console.log(alternativa)
             
-       storage.setItem("NOalternativa", i) // adiciona aquantidade de inputs    
-    }   
+    //    storage.setItem("VALalternativa", i) // adiciona aquantidade de inputs    
+    // }   
 
+    //      let srl = $( "#form0" ).serializeArray(); // transforma  os inputs em objeto
+    // console.log(srl)
+
+
+    // for (const alternativa of srl) {  // atribui para cada valor do objeto str  uma key(alternativa.name) e um valor(alternativa.value)
+    //     storage.setItem(alternativa.name, alternativa.value) 
+
+    //     console.log(alternativa)
+            
+    //    storage.setItem("VALalternativa", i) // adiciona aquantidade de inputs    
+    // }   
         
         
     
