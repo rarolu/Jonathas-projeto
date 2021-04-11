@@ -1,3 +1,4 @@
+
 let j = 0
 let i = 0
 let storage = window.localStorage
@@ -321,14 +322,14 @@ function tabela4(){
 function radio(){
 
 var choices = [];
-var els = document.getElementsByName('metodo1');
-    for (var i=0;i<els.length;i++){
+var method = document.getElementsByName('metodo1');
+    for (var i=0;i<method.length;i++){
         
-        if ( els[i].checked ) {
-        choices.push(els[i].value);
+        if ( method[i].checked ) {
+        choices.push(method[i].value);
         
         
-        storage.setItem('opt_metodo1',els[i].value )
+        storage.setItem('opt_metodo1',method[i].value )
 
         console.log(storage.getItem('opt_metodo1'))
 
@@ -364,6 +365,7 @@ var els = document.getElementsByName('metodo2');
 
 function valoresCriterios(){
     
+// ================================coloca os valores dos nomes do inputs do storage no arrary==============================
 
     let arrayCriterios = []
     let arrayAlternativas = []
@@ -384,36 +386,61 @@ function valoresCriterios(){
         arrayAlternativas[i] =  storage.getItem('alternativa' + i)
             
     } 
-    // console.log(arrayAlternativas)
-    //  console.log(arrayAlternativas[0].length)
 
 
-    // $('#div_valoresAlternativas').append('<form id="form_critAlt" action="#">')
 
-    // let divCriterios = document.getElementById('div_valoresAlternativas')
-
+// =========================adiciona as alternativas para cada criterio nas <divs> ====================================================================
     for (let i = 0; i < arrayCriterios.length; i++) {
         
         $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form></div>')
 
-            
-            // $('#div_valoresAlternativas').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div" style="float: left; margin-right: 10px;" ><label>'+arrayAlternativas[i]+'</label   ><input type="number" style="width: 150px; margin-top: 5px;"></div>')
+                       
         for (let j = 0; j < arrayAlternativas.length; j++) {
             
             $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name='+arrayAlternativas[j]+' style="width: 150px; margin-top: 5px;">')
             
         }        
-    
     }
+}
+
+function gerarObjeto(){
+
+// ================================coloca os valores dos nomes do inputs do storage no arrary==============================
+
+    let arrayObjeto = []
+    let arrayCriterios = []
+    let arrayAlternativas = []
+    qtdalternativa = Number(storage.getItem("kqtalternativa"))
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] = storage.getItem('criterio' + i)
+            
+    } 
+    // console.log(arrayCriterios)
 
 
-    for (let i = 0; i < arrayAlternativas.length; i++) {
-        let srl = $( "#form"+i+"").serializeArray(); // transforma  os inputs em
-        console.log(srl)
-        
+    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
+        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
+            
+    } 
+
+
+
+// ===========================================transforma os inputs em objetos =============================================
+
+
+    for (let i = 0; i < arrayCriterios.length; i++) {
+        let srl = $( "#form"+i+"").serializeArray(); // transforma  os inputs em objeto
+        arrayObjeto.push(srl)
         
     }
+    storage.setItem('objeto', JSON.stringify(arrayObjeto))
+    console.log(storage.getItem('objeto'))
     
+    data = JSON.parse(storage.getItem('objeto'))
+    console.log(data)
 }
 
 
