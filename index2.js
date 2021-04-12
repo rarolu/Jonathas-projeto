@@ -439,8 +439,43 @@ function gerarObjeto(){
     storage.setItem('objeto', JSON.stringify(arrayObjeto))
     console.log(storage.getItem('objeto'))
     
-    data = JSON.parse(storage.getItem('objeto'))
-    console.log(data)
+    datas = JSON.parse(storage.getItem('objeto'))
+    console.log(datas)
+
+
+        //var cols = ['name', 'value'];
+
+// ===================== criando a tabela =========================================        
+
+    for (var i = 0; i < datas.length; i++) {
+    
+    $('table').append('<tr></tr>');
+    $('#table_h').append('<th>'+datas[i][i].name+'</th>');
+
+
+        for (var j = 0; j <= 2; j++) {
+
+        console.log(datas[i][j].name)
+
+
+              
+        $('table tr:last-child').append('<td>' + datas[i][j].value + '</td>');
+        }
+        $('table tr:last-child').append('<th>'+ arrayCriterios[i]+ ' </th>')
+    }
+
+
+    // datas.forEach(function (data) {
+    //     var tr = document.createElement('tr')
+    //     for (var campo in data) {
+    //         var td = document.createElement('td')
+    //         td.innerHTML = data[campo]
+    //         tr.appendChild(td)
+
+    //     };
+    //     tbody.appendChild(tr)
+        
+    // });
 }
 
 
