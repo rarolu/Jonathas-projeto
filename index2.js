@@ -389,7 +389,7 @@ function valoresCriterios(){
 
 
 
-// =========================adiciona as alternativas para cada criterio nas <divs> ====================================================================
+// =========================adiciona as alternativas para cada criterio nas <divs> e cada valor se quer maximizar ou minimizar ====================================================================
     for (let i = 0; i < arrayCriterios.length; i++) {
         
         $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form><select name="SLCT'+arrayCriterios[i]+'" id="SLCT'+arrayCriterios[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
@@ -400,7 +400,7 @@ function valoresCriterios(){
             
             $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name='+arrayAlternativas[j]+' style="width: 150px; margin-top: 5px;">')
             
-            valor =  $('SLCT'+arrayCriterios[i]).val
+            valor =  $('#SLCT'+arrayCriterios[i] ).val();
             console.log(valor)
             storage.setItem("MinMax"+arrayCriterios[i], valor)
         } 
@@ -484,6 +484,35 @@ function gerarObjeto(){
     //     tbody.appendChild(tr)
         
     // });
+}
+function PrioridadeCriterios(){
+
+    let arrayCriterios = []
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    // console.log(storage.getItem('criterio1'))
+
+
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] = storage.getItem('criterio' + i)
+            
+    } 
+
+    for (let i = 0; i < arrayCriterios.length; i++) {
+
+        for (let j = 1; j < arrayCriterios.length ; j++) {
+            
+            if(i != j){
+                
+                 $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+arrayCriterios[i]+' é em relação a '+arrayCriterios[j]+'?</h2></div> ')
+
+
+            }
+
+        }        
+    }
+
+
 }
 
 
