@@ -392,16 +392,24 @@ function valoresCriterios(){
 // =========================adiciona as alternativas para cada criterio nas <divs> ====================================================================
     for (let i = 0; i < arrayCriterios.length; i++) {
         
-        $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form></div>')
+        $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form><select name="SLCT'+arrayCriterios[i]+'" id="SLCT'+arrayCriterios[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
+
 
                        
         for (let j = 0; j < arrayAlternativas.length; j++) {
             
             $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name='+arrayAlternativas[j]+' style="width: 150px; margin-top: 5px;">')
             
-        }        
+            valor =  $('SLCT'+arrayCriterios[i]).val
+            console.log(valor)
+            storage.setItem("MinMax"+arrayCriterios[i], valor)
+        } 
+            
     }
+
 }
+
+
 
 function gerarObjeto(){
 
@@ -455,7 +463,7 @@ function gerarObjeto(){
 
         for (var j = 0; j <= 2; j++) {
 
-        console.log(datas[i][j].name)
+        // console.log(datas[i][j].name)
 
 
               
