@@ -3,7 +3,13 @@ let j = 0
 let i = 0
 let storage = window.localStorage
 
+function home(){
 
+    window.location.href = './index.html'
+
+    localStorage.clear()
+
+}
 function chamar(){
     
     var a = storage.getItem('opt_metodo1')
@@ -23,7 +29,7 @@ function chamar(){
 
     //console.log(JSON.stringify(storage.getItem('opt_metodo1')))
     
-    if(storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS" )
+    if(storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS-2NE" )
     {
                 
         window.location.href = './registroAltCrit.html'
@@ -148,176 +154,7 @@ function resultado(){
     $('#resultado').html(totalsum)   
 }
 
-function tabela(){
-     
-    let array = []
-    qtdinput = Number(storage.getItem("kqtdinput"))
 
-
-
-    for (let i = 0; i < qtdinput; i++) {  // coloca cada valor do storage em um array
-        array[i] =  storage.getItem('numero' + i)
-            
-    } 
-    
-    array.push(storage.getItem('knumero2')) // acrescenta o input da outra pagina no array  */
-    
-    console.log(array)
-
-
-    /* ==========================================================================================================
-                    adiciona na tabela o array                                              */
-
-    var table = document.getElementById("table")[0]
-
-    var tbody = document.getElementsByTagName("tbody")[0]
-
-    tbody.innerHTML = ""
-    
-    for (let i = 0; i < qtdinput; i++) {
-        tbody.innerHTML += "<tr><td>"+storage.getItem('numero'+i)+"<tr>"
-        //$('#tbody').append("<tr> ${")
-    }
-
-}
-
-function tabela2 (){
-
-
-    let array = []
-    qtdinput = Number(storage.getItem("kqtdinput"))
-
-
-
-    for (let i = 0; i < qtdinput; i++) {  // coloca cada valor do storage em um array
-        array[i] =  storage.getItem('numero' + i)
-            
-    } 
-    
-    //array.push(storage.getItem('knumero2')) // acrescenta o input da outra pagina no array  */
-    
-    console.log(array)
-
-
-
-    var corpoTabela = document.querySelector('tbody')
-
-    var tr = document.createElement('tr')
-    
-
-
-
-    
-
-    for (let i = 0; array.length ; i++) {
-
-        
-
-        corpoTabela.appendChild(tr).append(array[i])
-         //array[i] = document.createElement('td')
-        //tr.appendChild(indice)
-    } 
-    
-}
-
-
-function tabela3(){
-
-    let arrayAtributo = []
-    let arrayInput = []
-    qtdinput = Number(storage.getItem("kqtdinput"))
-    qtdinput = Number(storage.getItem("kqtatributo"))
-
-
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayAtributo[i] =  storage.getItem('atributo' + i)
-            
-    } 
-
-
-    for (let i = 0; i < qtdinput; i++) {  // coloca cada valor do storage em um array
-        arrayInput[i] =  storage.getItem('numero' + i)
-            
-    } 
-
-    console.log(arrayInput)
-
-    const linhas = arrayInput.map(numero =>{
-        const tdnumeros = $('<td>').append(numero)
-        return $('<tr>').append(tdnumeros)
-    })
-
-    $('#tbody').append(linhas)
-    console.log('hello')
-}
-
-
-function tabela4(){
-  
-  
-    let arrayCriterios = []
-    let arrayAlternativas = []
-    qtdalternativa = Number(storage.getItem("kqtdalternativa"))
-    qtdcriterios = Number(storage.getItem("kqtcriterio"))
-
-
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayCriterios[i] =  storage.getItem('citerio' + i)
-            
-    } 
-    console.log(arrayCriterios)
-
-
-    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
-        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
-            
-    } 
-    console.log(arrayAlternativas)
-    console.log(arrayAlternativas[0].length)
-
-
-    arrayPage = []  
-
-    arrayPage.push(arrayAlternativas)
-    arrayPage.push(arrayCriterios)
-
-    console.log(arrayPage)
-    
-
-
-    //$('#tbody').append(td)
-    if(Number(storage.getItem('kqtalternativa')) > Number(storage.getItem('kqtcriterio'))){
-        for (i = 0; i < arrayAlternativas.length; i++){
-   
-             $('#tbody').append('<tr><td>'+arrayAlternativas[i]+'</td> <td>'+arrayCriterios[i]+'</td></tr>');
-                
-                
-            }
-    }
-
-    
-
-
-    
-
-
-
-  
-  
-    //var table = document.createElement("table");
-    if(Number(storage.getItem('kqtdinput')) > Number(storage.getItem('kqtatributo')))
-        for (i = 0; i < arrayPage.length; i++) {
-            var column = document.createElement("td");
-            
-                for (j = 0; j < qtdinput.length; j++) {
-                    var row = document.createElement("tr");
-                    var content = document.createTextNode(arrayPage[j][i]);
-                    column.appendChild(content);
-                    row.appendChild(column);
-                }
-            $('#tbody').append(row);
-        
-}}
 
 function radio(){
 
@@ -400,9 +237,7 @@ function valoresCriterios(){
             
             $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name='+arrayAlternativas[j]+' style="width: 150px; margin-top: 5px;">')
             
-            valor =  $('#SLCT'+arrayCriterios[i] ).val();
-            console.log(valor)
-            storage.setItem("MinMax"+arrayCriterios[i], valor)
+
         } 
             
     }
@@ -442,19 +277,39 @@ function gerarObjeto(){
     for (let i = 0; i < arrayCriterios.length; i++) {
         let srl = $( "#form"+i+"").serializeArray(); // transforma  os inputs em objeto
         arrayObjeto.push(srl)
+
+        // ============= adicona o valor de Min / Max ================
+        valor =  $('#SLCT'+arrayCriterios[i] ).val();
+        console.log(valor)
+        storage.setItem("MinMax"+arrayCriterios[i], valor)
         
     }
     storage.setItem('objeto', JSON.stringify(arrayObjeto))
     console.log(storage.getItem('objeto'))
     
-    datas = JSON.parse(storage.getItem('objeto'))
-    console.log(datas)
+    // datas = JSON.parse(storage.getItem('objeto'))
+    // console.log(datas)
 
-
+}
         //var cols = ['name', 'value'];
 
 // ===================== criando a tabela =========================================        
 
+function GerarTabela(){
+
+    let arrayCriterios = []
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] = storage.getItem('criterio' + i)
+            
+    } 
+
+
+
+    datas = JSON.parse(storage.getItem('objeto'))
+    console.log(datas)
     for (var i = 0; i < datas.length; i++) {
     
     $('table').append('<tr></tr>');
@@ -473,17 +328,6 @@ function gerarObjeto(){
     }
 
 
-    // datas.forEach(function (data) {
-    //     var tr = document.createElement('tr')
-    //     for (var campo in data) {
-    //         var td = document.createElement('td')
-    //         td.innerHTML = data[campo]
-    //         tr.appendChild(td)
-
-    //     };
-    //     tbody.appendChild(tr)
-        
-    // });
 }
 function PrioridadeCriterios(){
 
@@ -500,12 +344,14 @@ function PrioridadeCriterios(){
 
     for (let i = 0; i < arrayCriterios.length; i++) {
 
-        for (let j = 1; j < arrayCriterios.length ; j++) {
+        for (let j = 0; j < arrayCriterios.length ; j++) {
             
             if(i != j){
                 
-                 $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+arrayCriterios[i]+' é em relação a '+arrayCriterios[j]+'?</h2></div> ')
-
+                 $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+arrayCriterios[i]+' é em relação a '+arrayCriterios[j]+'?  <select name="'+arrayCriterios[i]+'" id="Select_Prior'+arrayCriterios[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
+                 valor =  $('#Select_Prior'+arrayCriterios[i] ).val();
+                 console.log(valor)
+                 storage.setItem("prior_"+arrayCriterios[i]+"_"+arrayCriterios[j], valor)
 
             }
 

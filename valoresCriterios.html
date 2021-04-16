@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="index2.js"></script>
 </head>
-<body onload="valoresCriterios()">
+<body onload="valoresCriterios()" onunload="gerarObjeto()">
     <h1>VALORES DOS CRITÉRIOS </h1>
 
     <div id="div_CriAlt">
@@ -15,25 +15,11 @@
 
     </div>
 
-    <div id="div_tabela">
-
-        <table id="table" border="1" >
-            <thead id="table_h">
-            </thead>
-            <tbody  id="tbody">
-            </tbody>
-            <tfoot>
-            </tfoot>
-
-        </table>    
-    <input type="range" min="-8" max="8" step="1" class="range" >
-    <output class="bubble" >3</output>
-
-    </div>
+ 
 
     <a  id="btn_click" onclick="gerarObjeto()">click</a> 
     <a href="./Prioridade.html">proxima</a>
-
+    <button onclick="home()"> HOME</button>
 
     
 </body>
