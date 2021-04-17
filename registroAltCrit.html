@@ -15,10 +15,9 @@
                 <input type="text"   class="input_pag1" id="criterios" name="criterio0"  placeholder="digite os critérios"><br>
                 <br>
                 
-                <a id="add_criterios" onclick="adicionarInputCriterio()"> new input</a>
-                <a id="btn_adicionarr" onclick="save2()"> adiconar</a>
-                <a id="remove_criterios" onclick="tirarInputCriterio()">remove inp</a>
             </form>
+            <button id="add_criterios" onclick="adicionarInputCriterio()"> new input</button>
+            <button id="remove_criterios" onclick="tirarInputCriterio()">remove inp</button>
         </div>    
 
         <div id="Div_inp_pag1">
@@ -29,18 +28,17 @@
                 <input type="text"   class="input_pag1" id="alternativas" name="alternativa0" placeholder="digite as alternativas"><br>
                 <br>
                 
-                <a id="add_alternativas" onclick="adicionarInputAlternativas()" > new input</a>
-                <a id="btn_adicionar" onclick="save1()"> adiconar</a>
-                <a id="remove_alternativas" onclick="tirarInputAlternativas()">remove inp</a>
-
+                
             </form>
+            <button><a id="add_alternativas" onclick="adicionarInputAlternativas()" > new input</a></button>
+            <button id="remove_alternativas" onclick="tirarInputAlternativas()">remove inp</button>
         </div>    
 
 
     </body>
 <footer>
     <button> 
-        <a href="valoresCriterios.html"> proxima </a>
+        <a onclick="save1(),save2()" href="valoresCriterios.html"> proxima </a>
     </button>
 </footer>
 

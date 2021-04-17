@@ -10,7 +10,7 @@ function home(){
     localStorage.clear()
 
 }
-function chamar(){
+function chamarPagina(){
     
     var a = storage.getItem('opt_metodo1')
     
@@ -156,7 +156,7 @@ function resultado(){
 
 
 
-function radio(){
+function valorRadio(){
 
 var choices = [];
 var method = document.getElementsByName('metodo1');
@@ -204,38 +204,19 @@ function valoresCriterios(){
     
 // ================================coloca os valores dos nomes do inputs do storage no arrary==============================
 
-    let arrayCriterios = []
-    let arrayAlternativas = []
-    qtdalternativa = Number(storage.getItem("kqtalternativa"))
-    qtdcriterios = Number(storage.getItem("kqtcriterio"))
-
-    // console.log(storage.getItem('criterio1'))
-
-
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayCriterios[i] = storage.getItem('criterio' + i)
-            
-    } 
-    // console.log(arrayCriterios)
-
-
-    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
-        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
-            
-    } 
-
-
+arrayC = GetArrayCriterios()
+arrayA = GetarrayAlternativas()
 
 // =========================adiciona as alternativas para cada criterio nas <divs> e cada valor se quer maximizar ou minimizar ====================================================================
-    for (let i = 0; i < arrayCriterios.length; i++) {
+    for (let i = 0; i < arrayC.length; i++) {
         
-        $('#div_CriAlt').append('<br><h2>Critério : '+arrayCriterios[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form><select name="SLCT'+arrayCriterios[i]+'" id="SLCT'+arrayCriterios[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
+        $('#div_CriAlt').append('<br><h2>Critério : '+arrayC[i]+ '</h2><div id="div'+i+'"><form id="form'+i+'"></form><select name="SLCT'+arrayC[i]+'" id="SLCT'+arrayC[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
 
 
                        
-        for (let j = 0; j < arrayAlternativas.length; j++) {
+        for (let j = 0; j < arrayA.length; j++) {
             
-            $('#form'+i).append('<label>'+arrayAlternativas[j]+' </label><input type="number" name='+arrayAlternativas[j]+' style="width: 150px; margin-top: 5px;">')
+            $('#form'+i).append('<label>'+arrayA[j]+' </label><input type="number" name='+arrayA[j]+' style="width: 150px; margin-top: 5px;">')
             
 
         } 
@@ -251,37 +232,21 @@ function gerarObjeto(){
 // ================================coloca os valores dos nomes do inputs do storage no arrary==============================
 
     let arrayObjeto = []
-    let arrayCriterios = []
-    let arrayAlternativas = []
-    qtdalternativa = Number(storage.getItem("kqtalternativa"))
-    qtdcriterios = Number(storage.getItem("kqtcriterio"))
-
-    
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayCriterios[i] = storage.getItem('criterio' + i)
-            
-    } 
-    // console.log(arrayCriterios)
-
-
-    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
-        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
-            
-    } 
-
+    arrayC = GetArrayCriterios()
+    arrayA = GetarrayAlternativas()
 
 
 // ===========================================transforma os inputs em objetos =============================================
 
 
-    for (let i = 0; i < arrayCriterios.length; i++) {
+    for (let i = 0; i < arrayC.length; i++) {
         let srl = $( "#form"+i+"").serializeArray(); // transforma  os inputs em objeto
         arrayObjeto.push(srl)
 
         // ============= adicona o valor de Min / Max ================
-        valor =  $('#SLCT'+arrayCriterios[i] ).val();
+        valor =  $('#SLCT'+arrayC[i] ).val();
         console.log(valor)
-        storage.setItem("MinMax"+arrayCriterios[i], valor)
+        storage.setItem("MinMax"+arrayC[i], valor)
         
     }
     storage.setItem('objeto', JSON.stringify(arrayObjeto))
@@ -297,15 +262,7 @@ function gerarObjeto(){
 
 function GerarTabela(){
 
-    let arrayCriterios = []
-    qtdcriterios = Number(storage.getItem("kqtcriterio"))
-
-    
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayCriterios[i] = storage.getItem('criterio' + i)
-            
-    } 
-
+    arrayC = GetArrayCriterios()
 
 
     datas = JSON.parse(storage.getItem('objeto'))
@@ -324,34 +281,25 @@ function GerarTabela(){
               
         $('table tr:last-child').append('<td>' + datas[i][j].value + '</td>');
         }
-        $('table tr:last-child').append('<th>'+ arrayCriterios[i]+ ' </th>')
+        $('table tr:last-child').append('<th>'+ arrayC[i]+ ' </th>')
     }
 
 
 }
 function PrioridadeCriterios(){
 
-    let arrayCriterios = []
-    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+    arrayC = GetArrayCriterios()
 
-    // console.log(storage.getItem('criterio1'))
+    for (let i = 0; i < arrayC.length; i++) {
 
-
-    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
-        arrayCriterios[i] = storage.getItem('criterio' + i)
-            
-    } 
-
-    for (let i = 0; i < arrayCriterios.length; i++) {
-
-        for (let j = 0; j < arrayCriterios.length ; j++) {
+        for (let j = 0; j < arrayC.length ; j++) {
             
             if(i != j){
                 
-                 $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+arrayCriterios[i]+' é em relação a '+arrayCriterios[j]+'?  <select name="'+arrayCriterios[i]+'" id="Select_Prior'+arrayCriterios[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
-                 valor =  $('#Select_Prior'+arrayCriterios[i] ).val();
+                 $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+arrayC[i]+' é em relação a '+arrayC[j]+'?  <select name="'+arrayC[i]+'" id="Select_Prior'+arrayC[i]+'" required="" style="width: 150px; margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
+                 valor =  $('#Select_Prior'+arrayC[i] ).val(); // pega o valor do valor dos select 
                  console.log(valor)
-                 storage.setItem("prior_"+arrayCriterios[i]+"_"+arrayCriterios[j], valor)
+                 storage.setItem("prior_"+arrayC[i]+"_"+arrayC[j], valor)
 
             }
 
@@ -361,4 +309,37 @@ function PrioridadeCriterios(){
 
 }
 
+function teste(){
+    document.getElementById('btn').addEventListener('click' , function (){
+        window.location.href = './index.html'
+    })
+}
 
+function GetArrayCriterios(){
+    let arrayCriterios = []
+    // let arrayAlternativas = []
+
+    qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    for (let i = 0; i < qtdcriterios; i++) {  // coloca cada valor do storage em um array
+        arrayCriterios[i] = storage.getItem('criterio' + i)
+            
+    } 
+    // console.log(arrayCriterios)
+
+    return arrayCriterios;
+}
+
+
+function GetarrayAlternativas() {
+    // let arrayCriterios = []
+    let arrayAlternativas = []
+    qtdalternativa = Number(storage.getItem("kqtalternativa"))
+    // qtdcriterios = Number(storage.getItem("kqtcriterio"))
+
+    for (let i = 0; i < qtdalternativa; i++) {  // coloca cada valor do storage em um array
+        arrayAlternativas[i] =  storage.getItem('alternativa' + i)
+            
+    } 
+    return arrayAlternativas;
+}
