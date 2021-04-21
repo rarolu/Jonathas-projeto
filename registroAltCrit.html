@@ -4,7 +4,7 @@
         <title>Criterios e Alternativas</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="index2.js"></script>
+        <script src="index.js"></script>
     </head>
     <body >
         <div id="Div_inp_pag1">
@@ -12,7 +12,7 @@
             <h1> Criterios</h1>
 
             <form id="form_criterios" action="#">
-                <input type="text"   class="input_pag1" id="criterios" name="criterio0"  placeholder="digite os critérios"><br>
+                <input type="text"   class="input" required id="criterios0" name="criterio0"  placeholder="digite os critérios"><br>
                 <br>
                 
             </form>
@@ -25,21 +25,24 @@
             <h1>Alternativas</h1>
 
             <form id="form_alternativas" action="#">
-                <input type="text"   class="input_pag1" id="alternativas" name="alternativa0" placeholder="digite as alternativas"><br>
-                <br>
-                
-                
+                <input type="text"   class="input"  id="alternativas0" name="alternativa0" required placeholder="digite as alternativas"><br>
+                <br>                
+            
             </form>
             <button><a id="add_alternativas" onclick="adicionarInputAlternativas()" > new input</a></button>
             <button id="remove_alternativas" onclick="tirarInputAlternativas()">remove inp</button>
+            
         </div>    
 
 
     </body>
 <footer>
     <button> 
-        <a onclick="save1(),save2()" href="valoresCriterios.html"> proxima </a>
+        <a id="btn_nxt" type="submit" onclick="save1(),save2()"> proxima </a>
+        
     </button>
+
+    <button type="submit" onclick="history.go(-1);">voltar</button>
 </footer>
 
 </html>
