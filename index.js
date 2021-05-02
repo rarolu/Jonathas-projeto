@@ -10,6 +10,48 @@ function home() {
     localStorage.clear()
 
 }
+
+function valorRadio() {
+
+    var choices = [];
+    var method = document.getElementsByName('metodo1');
+    for (var i = 0; i < method.length; i++) {
+
+        if (method[i].checked) {
+            choices.push(method[i].value);
+
+
+            storage.setItem('opt_metodo1', method[i].value)
+
+            console.log(storage.getItem('opt_metodo1'))
+
+        }
+
+    }
+
+
+    var choices2 = [];
+    var els = document.getElementsByName('metodo2');
+    for (var i = 0; i < els.length; i++) {
+
+        if (els[i].checked) {
+            choices.push(els[i].value);
+            storage.setItem('opt_metodo2', els[i].value)
+
+            console.log(storage.getItem('opt_metodo2'))
+
+        }
+
+    }
+
+
+
+    //window.location.href ='http://google.com'
+
+    // $(location).attr('href', 'http://google.com');
+
+}
+
 function chamarPagina() {
 
     var a = storage.getItem('opt_metodo1')
@@ -27,29 +69,58 @@ function chamarPagina() {
 
     console.log(a == b)
 
+    var option1=document.getElementsByName('metodo1');
+    var option2=document.getElementsByName('metodo2');
+
+
+    if (!(option1[0].checked || option1[1].checked || option1[2].checked)) {
+        alert("Por Favor Selecione o metodo 1");
+        // return false;
+    }else if(!(option2[0].checked || option2[1].checked || option2[2].checked)){
+        alert("Por Favor Selecione o metodo 2");
+
+        
+    }else{
+        
+        window.location.href = './registroAltCrit.html'
+    }
+
+    // if ( $("#AD").prop("checked" , false) ){
+    //     alert('selecione o campo') 
+    // }else{
+    //     window.location.href = './registroAltCrit.html'
+
+    // }
     //console.log(JSON.stringify(storage.getItem('opt_metodo1')))
 
-    if (storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS-2NE") {
+    // if (storage.getItem('opt_metodo1') != "" && storage.getItem('opt_metodo2') != "") {
 
-        window.location.href = './registroAltCrit.html'
+    //     window.location.href = './registroAltCrit.html'
 
-        //window.location.href ='http://google.com'
+    //     //window.location.href ='http://google.com'
 
-    }
+    // }
 
 }
 
 function tirarInputCriterio() {
 
-    $("#criterios" + i).remove()
-    i--
+    // while(i>0){
+        
+        $("#criterios" + i).remove()
+        i--
+    // }
+
 
 }
 
 function tirarInputAlternativas() {
 
-    $("#alternativas" + j).remove()
-    j--
+    // while(j<0){
+        
+        $("#alternativas" + j).remove()
+        j--
+    // }
 
 }
 
@@ -92,7 +163,7 @@ function save1() {
         console.log(alternativa)
         
         if(!alternativa.value){
-            alert('helo')
+            alert('preencha todos os campos das alternartivas')
             validation = false
             break;
         }
@@ -100,7 +171,7 @@ function save1() {
         
     }
     if(validation){
-        storage.setItem("kqtalternativa",strAlt.length ) // adiciona aquantidade de inputs    
+        storage.setItem("kqadiciotalternativa",strAlt.length ) // adiciona aquantidade de inputs    
         window.location.href = './valoresCriterios.html'
 }}
 
@@ -171,49 +242,6 @@ function resultado() {
 
 
 
-function valorRadio() {
-
-    var choices = [];
-    var method = document.getElementsByName('metodo1');
-    for (var i = 0; i < method.length; i++) {
-
-        if (method[i].checked) {
-            choices.push(method[i].value);
-
-
-            storage.setItem('opt_metodo1', method[i].value)
-
-            console.log(storage.getItem('opt_metodo1'))
-
-        }
-
-    }
-
-
-    var choices2 = [];
-    var els = document.getElementsByName('metodo2');
-    for (var i = 0; i < els.length; i++) {
-
-        if (els[i].checked) {
-            choices.push(els[i].value);
-
-
-            storage.setItem('opt_metodo2', els[i].value)
-
-            console.log(storage.getItem('opt_metodo2'))
-
-        }
-
-    }
-
-
-
-    //window.location.href ='http://google.com'
-
-    // $(location).attr('href', 'http://google.com');
-}
-
-
 
 function valoresCriterios() {
 
@@ -225,19 +253,21 @@ function valoresCriterios() {
     // =========================adiciona as alternativas para cada criterio nas <divs> e cada valor se quer maximizar ou minimizar ====================================================================
     for (let i = 0; i < arrayC.length; i++) {
 
-        $('#div_CriAlt').append('<br><h2>Critério : ' + arrayC[i] + '</h2><div id="div' + i + '"><form id="form' + i + '"></form><select name="SLCT' + arrayC[i] + '" id="SLCT' + arrayC[i] + '" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
+        $('#div_CriAlt').append('<br><h2>Critério : ' + arrayC[i] + '<div id="div_peso'+i +'" class="div_pesos" > Peso de(a): '+ arrayC[i] +' <input type="number" id="Peso'+i + arrayC[i] + '" step="0.001" class="pesos">  </input> </div></h2>  <div id="div' + i + '"><form id="form' + i + '"></form><select name="SLCT' + arrayC[i] + '" id="SLCT' + arrayC[i] + '" required="" style="width: 150px; margin-top: 5px;"><option value="Max">Maximizar ↑</option><option value="Min">Minimizar ↓</option></select></div> ')
 
+        if (storage.getItem('opt_metodo1') === "AHP" && storage.getItem('opt_metodo2') === "TOPSIS-2NE") {
+            document.getElementById("div_peso"+i).remove()
+        }
 
 
         for (let j = 0; j < arrayA.length; j++) {
 
-            $('#form' + i).append('<label>' + arrayA[j] + ' </label><input type="number" name=' + arrayA[j] + ' style="width: 150px; margin-top: 5px;">')
+            $('#form' + i).append('<label>' + arrayA[j] + ' </label><input type="number" name=' + arrayA[j] + ' style="width: 150px; margin-top: 5px;"><br>')
 
 
         }
 
     }
-
 }
 
 
@@ -249,6 +279,7 @@ function gerarObjeto() {
     let arrayObjeto = []
     arrayC = GetArrayCriterios()
     arrayA = GetarrayAlternativas()
+    let arrayPeso = []
 
 
     // ===========================================transforma os inputs em objetos =============================================
@@ -261,11 +292,25 @@ function gerarObjeto() {
         // ============= adicona o valor de Min / Max ================
         valor = $('#SLCT' + arrayC[i]).val();
         console.log(valor)
-        storage.setItem("MinMax" + arrayC[i], valor)
+        storage.setItem("MinMax_" + arrayC[i], valor)
 
     }
     storage.setItem('objeto', JSON.stringify(arrayObjeto))
     console.log(storage.getItem('objeto'))
+
+    if (storage.getItem('opt_metodo1') === "AD") {
+        for (let i = 0; i < arrayC.length; i++) {
+            peso = Number($("#Peso"+i + arrayC[i]).val())
+
+            storage.setItem('Peso_'+arrayC[i], peso)
+        }
+
+        window.location.href = './tabela.html'
+    }else{
+        window.location.href = './Prioridade.html'
+
+    }
+    
 
     // datas = JSON.parse(storage.getItem('objeto'))
     // console.log(datas)
@@ -288,7 +333,7 @@ function GerarTabela() {
         $('#table_h').append('<th>' + datas[i][i].name + '</th>');
 
 
-        for (var j = 0; j <= 2; j++) {
+        for (var j = 0; j <= datas.length ; j++) {
 
             // console.log(datas[i][j].name)
 
@@ -310,7 +355,9 @@ function PrioridadeCriterios() {
     for (const option of result) {
         
         $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+option[0]+' é em relação a '+option[1]+'?  <select name="'+option[0]+'" id="Select_Prior'+option[0]+'" required="" style="width: 150px; margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
+        
     }
+
 }
 
 function combine(a, q){
