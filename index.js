@@ -3,6 +3,15 @@ let j = 0
 let i = 0
 let storage = window.localStorage
 
+function squareSUMarray(array){
+let sum = 0
+    for (let i = 0; i < array.length; i++) {
+        sum += (array[i] * array[i])
+        
+    }
+return Math.sqrt(sum)
+}
+
 function home() {
 
     window.location.href = './index.html'
@@ -171,7 +180,7 @@ function save1() {
         
     }
     if(validation){
-        storage.setItem("kqadiciotalternativa",strAlt.length ) // adiciona aquantidade de inputs    
+        storage.setItem("kqtalternativa",strAlt.length ) // adiciona aquantidade de inputs    
         window.location.href = './valoresCriterios.html'
 }}
 
@@ -195,6 +204,7 @@ function save1() {
 function save2() {
 
 
+    let validation = true
 
     let strCrit = $("#form_criterios").serializeArray(); // transforma  os inputs em objeto
     console.log(strCrit)
@@ -205,16 +215,18 @@ function save2() {
 
         console.log(criterio)
 
-
-        for (let j = 0; j <= strCrit.length; j++) {
-
-            storage.setItem("kqtcriterio", j)
-
+        if (!criterio.value) {
+            alert('preencha todos os campos dos criterios')
+            validation = false
+            break;
         }
 
 
     }
-
+    if (validation) {
+        storage.setItem("kqtcriterio", strCrit.length) // adiciona aquantidade de inputs    
+        window.location.href = './valoresCriterios.html'
+    }
 }
 
 
@@ -319,33 +331,85 @@ function gerarObjeto() {
 //var cols = ['name', 'value'];
 
 // ===================== criando a tabela =========================================        
+function calculoTOPSIS() {
 
+// ====================== obtendo a matrix =====================    
+    normalizando = 0
+    arrayMatris = []
+    let numero
+    datas = JSON.parse(storage.getItem('objeto'))
+    console.log(datas)
+
+    for (var i = 0; i < datas.length; i++) {
+        
+        arrayMatrisX = []
+
+        for (var j = 0; j < datas.length ; j++) {
+            numero = datas[i][j].value
+            arrayMatrisX.push(numero)
+            console.log(arrayMatrisX)
+            
+        }
+        arrayMatris.push(arrayMatrisX)
+    }
+    console.log(arrayMatris)
+
+    // ================================ normalizando a matrix =========================
+
+    for (let k = 0; k < datas.length; k++) {
+        
+        for (let l = 0; l < datas.length; l++) {
+            normalizando = arrayMatris[k][l]/squareSUMarray(arrayMatris[k])
+            
+            console.log(normalizando)
+        }
+        
+    }
+    console.log(arrayMatris[0])
+
+}
 function GerarTabela() {
 
     arrayC = GetArrayCriterios()
-
-
+    arrayMatrisY = []
+    let numero
+    // array = [1,2,3,4,5,6]
+    
+    
     datas = JSON.parse(storage.getItem('objeto'))
     console.log(datas)
     for (var i = 0; i < datas.length; i++) {
-
+        
+        arrayMatrisX = []
         $('table').append('<tr></tr>');
-        $('#table_h').append('<th>' + datas[i][i].name + '</th>');
+        $('#table_h').append('<th>' + arrayC[i] + '</th>');
 
+        for (var j = 0; j < datas.length ; j++) {
+            numero = datas[i][j].value
+            // console.log(numero)
+            arrayMatrisX.push(numero)
+            console.log(arrayMatrisX)
+             
 
-        for (var j = 0; j <= datas.length ; j++) {
+            
 
             // console.log(datas[i][j].name)
 
 
 
-            $('table tr:last-child').append('<td>' + datas[i][j].value + '</td>');
+            $('table tr:last-child').append('<td>' + (datas[j][i].value) + '</td>');
+            
         }
-        $('table tr:last-child').append('<th>' + arrayC[i] + ' </th>')
+        $('table tr:last-child').append('<th>' + datas[i][i].name + ' </th>')
+        arrayMatrisY.push(arrayMatrisX)
     }
+    // console.log(storage.getItem('objeto'))
+    console.log(arrayMatrisY)
 
-
+    //  $('#div_tabela').append('<h2>'+squareSUMarray(array)+'<h2> ')
 }
+
+
 function PrioridadeCriterios() {
 
     arrayC = GetArrayCriterios()
@@ -354,8 +418,12 @@ function PrioridadeCriterios() {
     console.log(result)
     for (const option of result) {
         
-        $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+option[0]+' é em relação a '+option[1]+'?  <select name="'+option[0]+'" id="Select_Prior'+option[0]+'" required="" style="width: 150px; margin-top: 5px;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
+        $('#div_prioridade').append('<div id="PRIO"><h2>O quão preferível o critério '+option[0]+' é em relação a '+option[1]+'?  <select name="'+option[0]+'" id="Select_Prior_'+option[0]+'_'+option[1]+'" required="" style="width: 150px; margin-top: 5px;"><option svalue="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> </h2></div> ')
         
+        select = $('#Select_Prior_'+option[0]+'_'+option[1]+'').find(":selected").text();
+        console.log(select)
+
+        storage.setItem('Prio_'+option[0]+'_'+option[1]+'',select )
     }
 
 }
