@@ -3,6 +3,24 @@ let j = 0
 let i = 0
 let storage = window.localStorage
 
+function testeMM(){
+
+   var S_ideal = []
+   var S_n_ideal = []
+   var arrayC = GetArrayCriterios
+
+    for (let i = 0; i < arrayC.length; i++) {
+        var MinMax = storage.getItem('MinMax_'+arrayC[i])
+        if(MinMax === 'Max' ){
+            
+        }
+        
+    }
+}
+
+
+
+
 function squareSUMarray(array){
 let sum = 0
     for (let i = 0; i < array.length; i++) {
@@ -331,11 +349,15 @@ function gerarObjeto() {
 //var cols = ['name', 'value'];
 
 // ===================== criando a tabela =========================================        
+
+
 function calculoTOPSIS() {
 
 // ====================== obtendo a matrix =====================    
-    normalizando = 0
+    ponderando = 0
     arrayMatris = []
+    arrayC = GetArrayCriterios()
+
     let numero
     datas = JSON.parse(storage.getItem('objeto'))
     console.log(datas)
@@ -354,15 +376,26 @@ function calculoTOPSIS() {
     }
     console.log(arrayMatris)
 
-    // ================================ normalizando a matrix =========================
+    // ================================ ponderando a matrix =========================
 
-    for (let k = 0; k < datas.length; k++) {
+    for (let k = 0; k < arrayMatris.length; k++) {
+
+
+
+        $('table').append('<tr></tr>');
+        $('#table_h').append('<th>' +datas[k][k].name+ '</th>');
         
-        for (let l = 0; l < datas.length; l++) {
-            normalizando = arrayMatris[k][l]/squareSUMarray(arrayMatris[k])
+        for (let l = 0; l < arrayMatris.length; l++) {
+
+            valorPeso = storage.getItem("Peso_"+arrayC[k])
+            console.log(valorPeso)
+            ponderando = (arrayMatris[k][l]/squareSUMarray(arrayMatris[k])) * valorPeso
             
-            console.log(normalizando)
+            console.log(ponderando)
+            $('table tr:last-child').append('<td>' + ponderando + '</td>');
+
         }
+        $('table tr:last-child').append('<th>' + arrayC[k]  + ' </th>')
         
     }
     console.log(arrayMatris[0])
