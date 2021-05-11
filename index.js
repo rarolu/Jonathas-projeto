@@ -3,20 +3,92 @@ let j = 0
 let i = 0
 let storage = window.localStorage
 
-function testeMM(){
+function ObterMatris() {
+    // ====================== obtendo a matrix =====================    
+    ponderando = 0
+    arrayMatris = []
+    arrayC = GetArrayCriterios()
 
+
+    let numero
+    datas = JSON.parse(storage.getItem('objeto'))
+    console.log(datas)
+
+    for (var i = 0; i < datas.length; i++) {
+
+        arrayMatrisX = []
+
+        for (var j = 0; j < datas.length; j++) {
+            numero = datas[i][j].value
+            arrayMatrisX.push(numero)
+            console.log(arrayMatrisX)
+
+        }
+        arrayMatris.push(arrayMatrisX)
+    }
+    return arrayMatris
+
+}
+
+function TOPSIS_MaxMIn(){
+
+   matris = TOPSIS_MatrisPonderamento()
    var S_ideal = []
    var S_n_ideal = []
    var arrayC = GetArrayCriterios
+   let calc_ideal = 0
+   let calc_n_ideal = 0
+   let array_calc_ideal = []
+   let array_calc_n_ideal = []
 
-    for (let i = 0; i < arrayC.length; i++) {
-        var MinMax = storage.getItem('MinMax_'+arrayC[i])
-        if(MinMax === 'Max' ){
+
+
+
+
+// var min = Math.min(...matris)
+// var max = Math.max(...matris)
+// ========================================================================
+    for (let i = 0; i < 3; i++) {
+        var MinMax = storage.getItem('MinMax_' + arrayC[i])
+
+        let max = Math.max.apply(Math, matris[i])
+        let min = Math.min.apply(Math, matris[i])
+
+        if (MinMax === 'Max') {
+
+            S_ideal.push(max)
+            S_n_ideal.push(min)
+        }else { 
             
+            S_ideal.push(min)
+            S_n_ideal.push(max)
+
+
         }
-        
+
+
     }
+
+    console.log(S_ideal)
+    console.log(S_n_ideal)
+
+    for (let i = 0; i < matris.length; i++) {
+        calc_ideal += Math.pow((matris[i][0] + S_ideal[i]) ,2)
+        calc_n_ideal += Math.pow((matris[i][0] + S_n_ideal[i]) ,2)
+        Math.sqrt(calc_ideal)
+        Math.sqrt(calc_n_ideal)
+
+        array_calc_ideal.push(calc_ideal)
+        array_calc_n_ideal.push(calc_n_ideal)
+    
+    } 
+
+    return { array_calc_n_ideal , array_calc_ideal }
+
 }
+
+
+
 
 
 
@@ -351,95 +423,60 @@ function gerarObjeto() {
 // ===================== criando a tabela =========================================        
 
 
-function calculoTOPSIS() {
-
-// ====================== obtendo a matrix =====================    
+function TOPSIS_MatrisPonderamento() {
+  
     ponderando = 0
-    arrayMatris = []
-    arrayC = GetArrayCriterios()
+    matris = ObterMatris()
 
-    let numero
-    datas = JSON.parse(storage.getItem('objeto'))
-    console.log(datas)
-
-    for (var i = 0; i < datas.length; i++) {
-        
-        arrayMatrisX = []
-
-        for (var j = 0; j < datas.length ; j++) {
-            numero = datas[i][j].value
-            arrayMatrisX.push(numero)
-            console.log(arrayMatrisX)
-            
-        }
-        arrayMatris.push(arrayMatrisX)
-    }
-    console.log(arrayMatris)
-
+    arrayData = []
     // ================================ ponderando a matrix =========================
-
-    for (let k = 0; k < arrayMatris.length; k++) {
-
-
-
-        $('table').append('<tr></tr>');
-        $('#table_h').append('<th>' +datas[k][k].name+ '</th>');
+    
+    for (let k = 0; k < matris.length; k++) {
         
-        for (let l = 0; l < arrayMatris.length; l++) {
+        arrayRow = []
 
+        // $('table').append('<tr></tr>');
+        // $('#table_h').append('<th>' +datas[k][k].name+ '</th>');
+        
+        for (let l = 0; l < matris.length; l++) {
+            
             valorPeso = storage.getItem("Peso_"+arrayC[k])
             console.log(valorPeso)
-            ponderando = (arrayMatris[k][l]/squareSUMarray(arrayMatris[k])) * valorPeso
+            ponderando = (matris[k][l]/squareSUMarray(matris[k])) * valorPeso
             
             console.log(ponderando)
-            $('table tr:last-child').append('<td>' + ponderando + '</td>');
-
+            
+            arrayRow.push(ponderando)
+            console.log(arrayRow)
+            // $('table tr:last-child').append('<td>' + ponderando + '</td>');
+            
         }
-        $('table tr:last-child').append('<th>' + arrayC[k]  + ' </th>')
+        arrayData.push(arrayRow) 
+        // $('table tr:last-child').append('<th>' + arrayC[k]  + ' </th>')
         
     }
-    console.log(arrayMatris[0])
-
+    console.log(arrayData)
+    return arrayData
 }
 function GerarTabela() {
 
     arrayC = GetArrayCriterios()
-    arrayMatrisY = []
-    let numero
-    // array = [1,2,3,4,5,6]
-    
-    
-    datas = JSON.parse(storage.getItem('objeto'))
-    console.log(datas)
-    for (var i = 0; i < datas.length; i++) {
+    matris = ObterMatris()
+
+    for (var i = 0; i < matris.length; i++) {
         
-        arrayMatrisX = []
         $('table').append('<tr></tr>');
         $('#table_h').append('<th>' + arrayC[i] + '</th>');
 
-        for (var j = 0; j < datas.length ; j++) {
-            numero = datas[i][j].value
-            // console.log(numero)
-            arrayMatrisX.push(numero)
-            console.log(arrayMatrisX)
-             
-
-            
-
-            // console.log(datas[i][j].name)
+        for (var j = 0; j < matris.length ; j++) {
 
 
-
-            $('table tr:last-child').append('<td>' + (datas[j][i].value) + '</td>');
+            $('table tr:last-child').append('<td>' + (matris[j][i].value) + '</td>');
             
         }
-        $('table tr:last-child').append('<th>' + datas[i][i].name + ' </th>')
-        arrayMatrisY.push(arrayMatrisX)
+        $('table tr:last-child').append('<th>' + matris[i][i].name + ' </th>')
     }
-    // console.log(storage.getItem('objeto'))
-    console.log(arrayMatrisY)
 
-    //  $('#div_tabela').append('<h2>'+squareSUMarray(array)+'<h2> ')
 }
 
 
@@ -513,13 +550,28 @@ function GetarrayAlternativas() {
     return arrayAlternativas;
 }
 
-function erro() {
+function testeTabela() {
 
-    valor = $('.input').val()
-    console.log(valor)
-    if (valor === "") {
-        alert("digite")
+    matris = TOPSIS_MatrisPonderamento()
+    arrayC = GetArrayCriterios()
+
+    for (let i = 0; i < matris.length; i++) {
+        linha = matris[i]
+
+        $('table').append('<tr>'+linha+'</tr>');
+        $('#table_h').append('<th>' +datas[i][i].name+ '</th>');
+
+        for (let j = 0; j < matris.length; j++) {
+            coluna = matris[i][j]
+            $('table tr:last-child').append('<td>' + coluna + '</td>');
+
+
+        }
+        $('table tr:last-child').append('<th>' + arrayC[i]  + ' </th>')
+
     }
+
+
 
 
 }
