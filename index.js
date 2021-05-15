@@ -3,6 +3,39 @@ let j = 0
 let i = 0
 let storage = window.localStorage
 
+function calcula() {
+
+    mais = 0
+    menos = 0 
+
+    mais = Math.pow((0,3170 - 0,2536) ,2 ) + Math.pow((0,1091 - 0,2182) ,2 ) + Math.pow((0,1059 - 0,2119) ,2 )
+    console.log(Math.sqrt(mais))
+}
+
+
+function test(){
+
+    let S_ideal = []
+    let S_n_ideal = []
+    let array1 = [1,2,3,4,5,6,7,8]
+
+   let max = Math.max.apply(Math, array1) 
+   let min = Math.min.apply(Math,array1)
+
+if (MinMax === 'Max') {
+
+    S_ideal.push(max)
+    S_n_ideal.push(min)
+}else { 
+    
+    S_ideal.push(min)
+    S_n_ideal.push(max)
+
+
+}
+
+}
+
 function ObterMatris() {
     // ====================== obtendo a matrix =====================    
     ponderando = 0
@@ -33,14 +66,16 @@ function ObterMatris() {
 function TOPSIS_MaxMIn(){
 
    matris = TOPSIS_MatrisPonderamento()
-   var S_ideal = []
-   var S_n_ideal = []
-   var arrayC = GetArrayCriterios
+   let S_ideal = []
+   let S_n_ideal = []
+   let arrayC = GetArrayCriterios()
    let calc_ideal = 0
    let calc_n_ideal = 0
    let array_calc_ideal = []
    let array_calc_n_ideal = []
-
+   let arrayPR = []
+   let Proxi_rel = 0
+    
 
 
 
@@ -49,42 +84,52 @@ function TOPSIS_MaxMIn(){
 // var max = Math.max(...matris)
 // ========================================================================
     for (let i = 0; i < 3; i++) {
-        var MinMax = storage.getItem('MinMax_' + arrayC[i])
-
-        let max = Math.max.apply(Math, matris[i])
-        let min = Math.min.apply(Math, matris[i])
-
+        
+        let MinMax = storage.getItem('MinMax_' + arrayC[i])
+        console.log(arrayC)
+        
         if (MinMax === 'Max') {
 
-            S_ideal.push(max)
-            S_n_ideal.push(min)
-        }else { 
-            
-            S_ideal.push(min)
-            S_n_ideal.push(max)
-
-
+            S_ideal.push(Math.max.apply(Math, matris[i]))
+            S_n_ideal.push(Math.min.apply(Math, matris[i]))
         }
+        if(MinMax === 'Min'){
+            S_ideal.push(Math.min.apply(Math, matris[i]))
+            S_n_ideal.push(Math.max.apply(Math, matris[i]))
+        }
+        console.log(S_ideal)
+        console.log(S_n_ideal)
 
 
     }
 
-    console.log(S_ideal)
-    console.log(S_n_ideal)
+    // console.log(S_ideal)
+    // console.log(S_n_ideal)
+
 
     for (let i = 0; i < matris.length; i++) {
-        calc_ideal += Math.pow((matris[i][0] + S_ideal[i]) ,2)
-        calc_n_ideal += Math.pow((matris[i][0] + S_n_ideal[i]) ,2)
-        Math.sqrt(calc_ideal)
-        Math.sqrt(calc_n_ideal)
+        for (let j = 0; j < matris.length; j++) {
+        calc_ideal = calc_ideal + ((matris[j][i] - S_ideal[i]) * (matris[j][i] - S_ideal[i]))
+        
+        calc_n_ideal = calc_n_ideal + ((matris[j][i] - S_n_ideal[i]) * (matris[j][i] - S_n_ideal[i]))
+        console.log(calc_ideal)    
 
+        }
+        
         array_calc_ideal.push(calc_ideal)
         array_calc_n_ideal.push(calc_n_ideal)
-    
+        Proxi_rel = array_calc_n_ideal [i] / array_calc_ideal[i] - array_calc_n_ideal[i]
+        
+        arrayPR.push(Proxi_rel)
+        
+        
+        
     } 
-
-    return { array_calc_n_ideal , array_calc_ideal }
-
+    
+    Math.sqrt(calc_n_ideal)
+    Math.sqrt(calc_ideal)
+    return [ array_calc_n_ideal , array_calc_ideal, arrayPR ]
+    
 }
 
 
@@ -400,22 +445,35 @@ function gerarObjeto() {
     storage.setItem('objeto', JSON.stringify(arrayObjeto))
     console.log(storage.getItem('objeto'))
 
+    var somaPeso = 0
     if (storage.getItem('opt_metodo1') === "AD") {
         for (let i = 0; i < arrayC.length; i++) {
             peso = Number($("#Peso"+i + arrayC[i]).val())
 
             storage.setItem('Peso_'+arrayC[i], peso)
-        }
 
-        window.location.href = './tabela.html'
+            pesoValor = Number(($('#Peso'+i+arrayC[i]).val()))
+            somaPeso += pesoValor
+            
+            
+        }
+        if(somaPeso == 1){
+
+            window.location.href = './tabela.html'
+        }else{
+            alert(' A soma dos pesos tem que ser igual a 1')
+
+        }
     }else{
-        window.location.href = './Prioridade.html'
+        // window.location.href = './Prioridade.html'
 
     }
+
     
 
     // datas = JSON.parse(storage.getItem('objeto'))
     // console.log(datas)
+    // console.log(document.querySelector('.pesos').value)
 
 }
 //var cols = ['name', 'value'];
@@ -442,7 +500,7 @@ function TOPSIS_MatrisPonderamento() {
             
             valorPeso = storage.getItem("Peso_"+arrayC[k])
             console.log(valorPeso)
-            ponderando = (matris[k][l]/squareSUMarray(matris[k])) * valorPeso
+            ponderando = (matris[k ][l]/squareSUMarray(matris[k])) * valorPeso
             
             console.log(ponderando)
             
@@ -552,26 +610,59 @@ function GetarrayAlternativas() {
 
 function testeTabela() {
 
+    // matris = TOPSIS_MatrisPonderamento()
     matris = TOPSIS_MatrisPonderamento()
+    
     arrayC = GetArrayCriterios()
 
     for (let i = 0; i < matris.length; i++) {
         linha = matris[i]
 
         $('table').append('<tr>'+linha+'</tr>');
-        $('#table_h').append('<th>' +datas[i][i].name+ '</th>');
+        $('#table_h').append('<th>' + arrayC[i]  + '</th>');
 
         for (let j = 0; j < matris.length; j++) {
-            coluna = matris[i][j]
+            coluna = matris[j][i]
             $('table tr:last-child').append('<td>' + coluna + '</td>');
 
 
         }
-        $('table tr:last-child').append('<th>' + arrayC[i]  + ' </th>')
+        $('table tr:last-child').append('<th>' +datas[i][i].name+ ' </th>')
 
     }
+}
+
+function tabelaRanking(){
+   // matris = TOPSIS_MatrisPonderamento()
+//    matris = TOPSIS_MatrisPonderamento()
+    topsis = TOPSIS_MaxMIn()
+   arrayC = GetArrayCriterios()
+   console.log(topsis)
+   arrayA = GetarrayAlternativas()
+
+   
+   for (let i = 0; i < topsis.length; i++) {
+           
+    $('#t_body_rank').append('<tr><th>'+arrayA[i]+'</th></tr>');
+           
+
+       
+
+       for (let j = 0; j < arrayC.length -1  ; j++) {
+        //    coluna = topsis.array_calc_ideal
+        //    console.log(coluna)
+           $('table t_body_rank').append('<td>' +topsis[j][i]+ '</td>');
+        
+           
+            // if(i == 2)
 
 
 
+
+       }
+    //    $('#t_body_rank').append('<tr> </tr>')
+       
+    }
+    console.table(topsis)
 
 }
